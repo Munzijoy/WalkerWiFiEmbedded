@@ -26,7 +26,7 @@ ESP8266::ESP8266(PinName tx, PinName rx, uint8_t mode, bool debug)
     _serial.baud(115200);
     _parser.debugOn(debug);
     if (!startup(mode)) {
-        Display::WriteLine("ESP MODE FAIL");
+        Display::instance().WriteLine("ESP MODE FAIL");
         exit(EXIT_FAILURE);
     }
 

@@ -8,19 +8,29 @@
 #ifndef DISPLAY_H_
 #define DISPLAY_H_
 
-#include "LCD_DISCO_F429ZI.h"
 #include <string>
+#include "LCD_DISCO_F429ZI.h"
 
 class Display {
     public:
-        static void WriteLine(std::string s);
-        static LCD_DISCO_F429ZI GetDisplay(void) {
-            return _lcd;
+        static Display& instance() {
+            static Display _instance;
+            return _instance;
         }
+        ~Display() {
+        }
+        void WriteLine(std::string s);
+        LCD_DISCO_F429ZI _lcd;
     private:
-        static LCD_DISCO_F429ZI _lcd;
-        static uint16_t _currentLine;
-};
+        Display() :
+                _currentLine(0) {
+        }           // verhindert, dass ein Objekt von außerhalb von Display erzeugt wird.
+        // protected, wenn man von der Klasse noch erben möchte
+        Display(const Display&); /* verhindert, dass eine weitere Instanz via
+         Kopier-Konstruktor erstellt werden kann */
+        Display & operator =(const Display &); //Verhindert weitere Instanz durch Kopie
 
+        uint16_t _currentLine;
+};
 
 #endif /* DISPLAY_H_ */

@@ -6,10 +6,12 @@
  */
 
 #include "Display.h"
+#include "mbed.h"
 
-LCD_DISCO_F429ZI Display::_lcd;
-uint16_t Display::_currentLine(0);
+Mutex mutex;
 
 void Display::WriteLine(std::string s) {
-    _lcd.DisplayStringAtLine(_currentLine++, (uint8_t*) s.c_str());
+    mutex.lock();
+    Display::instance()._lcd.DisplayStringAtLine(_currentLine++, (uint8_t*) s.c_str());
+    mutex.unlock();
 }
